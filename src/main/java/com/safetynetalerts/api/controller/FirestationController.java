@@ -1,7 +1,5 @@
 package com.safetynetalerts.api.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.safetynetalerts.api.model.Firestation;
 import com.safetynetalerts.api.service.FirestationService;
 
@@ -32,17 +28,17 @@ public class FirestationController {
 	}
 	
 	@PostMapping
-	public void createFirestation(@RequestBody Firestation firestation) throws FileNotFoundException, IOException {
+	public void createFirestation(@RequestBody Firestation firestation) {
 		firestationService.saveFirestation(firestation);
 	}
 	
 	@PutMapping
-	public void updateFirestation(@RequestBody Firestation firestation) throws StreamReadException, DatabindException, IOException {
-		firestationService.updateFirestation(firestation, firestation);
+	public void updateFirestation(@RequestBody Firestation firestation) {
+		firestationService.updateFirestation(firestation);
 	}
 	
 	@DeleteMapping
-	public void deleteFirestation(@RequestBody Firestation firestation) throws StreamReadException, DatabindException, IOException {
+	public void deleteFirestation(@RequestBody Firestation firestation) {
 		firestationService.deleteFirestation(firestation);
 	}
 }
