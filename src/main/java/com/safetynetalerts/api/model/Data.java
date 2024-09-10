@@ -2,8 +2,11 @@ package com.safetynetalerts.api.model;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Repository
 public class Data {
 	
 	@JsonProperty("persons")
