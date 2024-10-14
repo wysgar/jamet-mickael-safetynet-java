@@ -1,7 +1,7 @@
 package com.safetynetalerts.api.controller;
 
-import java.text.ParseException;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,24 +26,34 @@ public class FirestationController {
 	private AlertService alertService;
 	@Autowired
 	private FirestationService firestationService;
+	private static final Logger logger = LogManager.getLogger("FirestationController");
 	
 	@GetMapping
-	private FirestationDTO getPersonPerStation(@RequestParam Integer stationNumber ) throws ParseException {
-		return alertService.getPersonPerStation(stationNumber);
+	private FirestationDTO getPersonPerStation(@RequestParam Integer stationNumber) {
+	    logger.info("Received request to get person per station for station number: {}", stationNumber);
+	    FirestationDTO result = alertService.getPersonPerStation(stationNumber);
+	    logger.debug("Response for station number {}: {}", stationNumber, result);
+	    return result;
 	}
-	
+
 	@PostMapping
 	public void createFirestation(@RequestBody Firestation firestation) {
-		firestationService.saveFirestation(firestation);
+	    logger.info("Received request to create firestation: {}", firestation);
+	    firestationService.saveFirestation(firestation);
+	    logger.debug("Firestation created: {}", firestation);
 	}
-	
+
 	@PutMapping
 	public void updateFirestation(@RequestBody Firestation firestation) {
-		firestationService.updateFirestation(firestation);
+	    logger.info("Received request to update firestation: {}", firestation);
+	    firestationService.updateFirestation(firestation);
+	    logger.debug("Firestation updated: {}", firestation);
 	}
-	
+
 	@DeleteMapping
 	public void deleteFirestation(@RequestBody Firestation firestation) {
-		firestationService.deleteFirestation(firestation);
+	    logger.info("Received request to delete firestation: {}", firestation);
+	    firestationService.deleteFirestation(firestation);
+	    logger.debug("Firestation deleted: {}", firestation);
 	}
 }

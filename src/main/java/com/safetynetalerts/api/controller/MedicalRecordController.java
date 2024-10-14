@@ -1,10 +1,9 @@
 package com.safetynetalerts.api.controller;
 
-import java.util.List;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,24 +19,26 @@ public class MedicalRecordController {
 	
 	@Autowired
 	private MedicalRecordService medicalRecordService;
-	
-	@GetMapping
-	public List<MedicalRecord> getMedicalRecord() {
-		return medicalRecordService.getMedicalRecord();
-	}
+	private static final Logger logger = LogManager.getLogger("MedicalRecordController");
 	
 	@PostMapping
 	public void createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-		medicalRecordService.saveMedicalRecord(medicalRecord);
+	    logger.info("Received request to create medical record: {}", medicalRecord);
+	    medicalRecordService.saveMedicalRecord(medicalRecord);
+	    logger.debug("Medical record created: {}", medicalRecord);
 	}
-	
+
 	@PutMapping
 	public void updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-		medicalRecordService.updateMedicalRecord(medicalRecord, medicalRecord);
+	    logger.info("Received request to update medical record: {}", medicalRecord);
+	    medicalRecordService.updateMedicalRecord(medicalRecord);
+	    logger.debug("Medical record updated: {}", medicalRecord);
 	}
-	
+
 	@DeleteMapping
 	public void deleteMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-		medicalRecordService.deleteMedicalRecord(medicalRecord);
+	    logger.info("Received request to delete medical record: {}", medicalRecord);
+	    medicalRecordService.deleteMedicalRecord(medicalRecord);
+	    logger.debug("Medical record deleted: {}", medicalRecord);
 	}
 }
