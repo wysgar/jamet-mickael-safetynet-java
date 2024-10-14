@@ -1,5 +1,7 @@
 package com.safetynetalerts.api.model;
 
+import java.util.Objects;
+
 public class Person {
 	private String firstName;
 	private String lastName;
@@ -51,5 +53,23 @@ public class Person {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, city, email, firstName, lastName, phone, zip);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Person other = (Person) obj;
+		return Objects.equals(address, other.address) && Objects.equals(city, other.city)
+				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(phone, other.phone) && zip == other.zip;
 	}
 }
