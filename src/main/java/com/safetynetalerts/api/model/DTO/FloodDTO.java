@@ -6,10 +6,10 @@ public class FloodDTO {
 	private List<HomeDTO> homes;
 	private int stationNumber;
 	
-	public List<HomeDTO> getHome() {
+	public List<HomeDTO> getHomes() {
 		return homes;
 	}
-	public void setHome(List<HomeDTO> home) {
+	public void setHomes(List<HomeDTO> home) {
 		this.homes = home;
 	}
 	
