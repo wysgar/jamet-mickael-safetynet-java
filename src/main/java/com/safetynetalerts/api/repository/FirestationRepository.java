@@ -57,12 +57,9 @@ public class FirestationRepository {
 	public void deleteFirestation(Firestation firestation) {
 	    logger.info("Attempting to delete firestation: {}", firestation);
 	    try {
-	        if (data.getFirestations().remove(firestation)) {
-	            writeJSON();
-	            logger.info("Successfully deleted firestation: {}", firestation);
-	        } else {
-	            logger.error("Firestation not found: {}", firestation);
-	        }
+	        data.getFirestations().remove(firestation);
+	        writeJSON();
+	        logger.info("Successfully deleted firestation: {}", firestation);
 	    } catch (Exception e) {
 	        logger.error("Error deleting firestation: {}", firestation, e);
 	    }

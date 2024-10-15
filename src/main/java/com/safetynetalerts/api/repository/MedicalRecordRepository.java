@@ -57,12 +57,9 @@ public class MedicalRecordRepository {
 	public void deleteMedicalRecord(MedicalRecord medicalRecord) {
 	    logger.info("Attempting to delete medical record: {}", medicalRecord);
 	    try {
-	        if (data.getMedicalRecords().remove(medicalRecord)) {
-	            writeJSON();
-	            logger.info("Successfully deleted medical record: {}", medicalRecord);
-	        } else {
-	            logger.error("Medical record not found: {}", medicalRecord);
-	        }
+	    	data.getMedicalRecords().remove(medicalRecord);
+	        writeJSON();
+	        logger.info("Successfully deleted medical record: {}", medicalRecord);
 	    } catch (Exception e) {
 	        logger.error("Error deleting medical record: {}", medicalRecord, e);
 	    }

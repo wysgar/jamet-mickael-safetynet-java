@@ -57,12 +57,9 @@ public class PersonRepository {
 	public void deletePerson(Person person) {
 	    logger.info("Attempting to delete person: {}", person);
 	    try {
-	        if (data.getPersons().remove(person)) {
-	            writeJSON();
-	            logger.info("Successfully deleted person: {}", person);
-	        } else {
-	            logger.warn("Person not found for deletion: {}", person);
-	        }
+	    	data.getPersons().remove(person);
+	    	writeJSON();
+	    	logger.info("Successfully deleted person: {}", person);
 	    } catch (Exception e) {
 	        logger.error("Error deleting person: {}", person, e);
 	    }

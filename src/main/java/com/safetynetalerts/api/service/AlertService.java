@@ -187,7 +187,15 @@ public class AlertService {
         
         logger.info("Returning child alert info for address {} with {} children and {} family members", address, childAlertDTO.getChilds().size(), childAlertDTO.getFamily().size());
         
-        return childAlertDTO;
+        if(childAlertDTO.getChilds().isEmpty()) {
+        	ChildAlertDTO temp = new ChildAlertDTO();
+        	temp.setChilds(new ArrayList<>());
+        	temp.setFamily(new ArrayList<>());
+        	return temp;
+        }
+        else {
+        	return childAlertDTO;
+        }
     }
 
 	public PhoneAlertDTO getPhonePerStation(int firestationNumber) {
