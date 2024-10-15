@@ -67,11 +67,11 @@ public class DataService {
 	    try {
 	        // Write data to JSON file
 	        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File("src/main/resources/data.json"), data);
-	        logger.debug("Successfully wrote data to JSON file: {}", "src/main/resources/datatest.json");
+	        logger.debug("Successfully wrote data to JSON file: {}", "src/main/resources/data.json");
 
 	        logger.info("Data successfully saved to JSON file");
 	    } catch (IOException e) {
-	        logger.error("Error writing to JSON file: src/main/resources/datatest.json", e);
+	        logger.error("Error writing to JSON file: src/main/resources/data.json", e);
 	    }
 	}
 }
