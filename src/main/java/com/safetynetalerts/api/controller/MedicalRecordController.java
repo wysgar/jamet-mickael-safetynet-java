@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.safetynetalerts.api.model.MedicalRecord;
 import com.safetynetalerts.api.service.MedicalRecordService;
 
+/**
+ * Controller for handling medical records-related API endpoints.
+ * This controller provides endpoints to create, update, and delete medical records.
+ */
 @RestController
 @RequestMapping("/medicalRecord")
 public class MedicalRecordController {
@@ -21,6 +25,11 @@ public class MedicalRecordController {
 	private MedicalRecordService medicalRecordService;
 	private static final Logger logger = LogManager.getLogger("MedicalRecordController");
 	
+	/**
+     * Creates a new medical record.
+     * 
+     * @param medicalRecord the {@link MedicalRecord} object containing the details of the new medical record
+     */
 	@PostMapping
 	public void createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 	    logger.info("Received request to create medical record: {}", medicalRecord);
@@ -28,6 +37,11 @@ public class MedicalRecordController {
 	    logger.debug("Medical record created: {}", medicalRecord);
 	}
 
+	/**
+     * Updates an existing medical record.
+     * 
+     * @param medicalRecord the {@link MedicalRecord} object containing the updated details of the medical record
+     */
 	@PutMapping
 	public void updateMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 	    logger.info("Received request to update medical record: {}", medicalRecord);
@@ -35,6 +49,11 @@ public class MedicalRecordController {
 	    logger.debug("Medical record updated: {}", medicalRecord);
 	}
 
+	/**
+     * Deletes an existing medical record.
+     * 
+     * @param medicalRecord the {@link MedicalRecord} object representing the medical record to delete
+     */
 	@DeleteMapping
 	public void deleteMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
 	    logger.info("Received request to delete medical record: {}", medicalRecord);

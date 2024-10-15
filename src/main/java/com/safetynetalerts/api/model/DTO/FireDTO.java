@@ -2,6 +2,12 @@ package com.safetynetalerts.api.model.DTO;
 
 import java.util.List;
 
+/**
+ * Data Transfer Object (DTO) representing information related to a fire incident.
+ * 
+ * This class encapsulates details of persons affected by a fire incident
+ * associated with a specific fire station.
+ */
 public class FireDTO {
 	private List<PersonMedicalRecordDTO> persons;
 	private int station;

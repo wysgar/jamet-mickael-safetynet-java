@@ -11,6 +11,11 @@ import com.safetynetalerts.api.model.Data;
 import com.safetynetalerts.api.model.MedicalRecord;
 import com.safetynetalerts.api.service.DataService;
 
+/**
+ * Repository class for managing {@link MedicalRecord} data.
+ * Provides methods to retrieve, save, update, and delete medical records,
+ * as well as writing the data to a JSON file.
+ */
 @Repository
 public class MedicalRecordRepository {
 	
@@ -20,6 +25,11 @@ public class MedicalRecordRepository {
 	private DataService dataService;
 	private static final Logger logger = LogManager.getLogger("MedicalRecordRepository");
 
+	/**
+     * Retrieves the list of medical records from the data source.
+     *
+     * @return a list of {@link MedicalRecord}, or {@code null} if an error occurs
+     */
 	public List<MedicalRecord> getMedicalRecord() {
 	    logger.info("Fetching list of medical records.");
 	    try {
@@ -32,6 +42,11 @@ public class MedicalRecordRepository {
 	    return null;
 	}
 
+	/**
+     * Saves a new medical record to the data source and writes the updated data to JSON.
+     *
+     * @param medicalRecord the {@link MedicalRecord} to save
+     */
 	public void saveMedicalRecord(MedicalRecord medicalRecord) {
 	    logger.info("Attempting to save medical record: {}", medicalRecord);
 	    try {
@@ -43,6 +58,12 @@ public class MedicalRecordRepository {
 	    }
 	}
 
+	/**
+     * Updates an existing medical record at the specified index and writes the updated data to JSON.
+     *
+     * @param index the index of the medical record to update
+     * @param medicalRecord the updated {@link MedicalRecord} object
+     */
 	public void updateMedicalRecord(int index, MedicalRecord medicalRecord) {
 	    logger.info("Attempting to update medical record at index {}: {}", index, medicalRecord);
 	    try {
@@ -54,6 +75,11 @@ public class MedicalRecordRepository {
 	    }
 	}
 
+	/**
+     * Deletes the specified medical record from the data source and writes the updated data to JSON.
+     *
+     * @param medicalRecord the {@link MedicalRecord} to delete
+     */
 	public void deleteMedicalRecord(MedicalRecord medicalRecord) {
 	    logger.info("Attempting to delete medical record: {}", medicalRecord);
 	    try {
@@ -65,6 +91,9 @@ public class MedicalRecordRepository {
 	    }
 	}
 	
+	/**
+     * Writes the current medical records data to a JSON file.
+     */
 	public void writeJSON() {
 	    logger.info("Writing medical records data to JSON.");
 	    try {

@@ -2,6 +2,13 @@ package com.safetynetalerts.api.model;
 
 import java.util.Objects;
 
+/**
+ * Represents a firestation with an address and a station number.
+ * 
+ * This class is used to model the data related to firestations
+ * within the application, including its unique address and 
+ * associated station number.
+ */
 public class Firestation {
 	
 	private String address;

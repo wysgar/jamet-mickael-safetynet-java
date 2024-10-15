@@ -6,6 +6,14 @@ import org.springframework.stereotype.Repository;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Represents a data set containing information about
+ * persons, firestations, and medical records.
+ * 
+ * This class is used to encapsulate the data loaded
+ * from a JSON file, allowing easy access to the different
+ * entities within the application.
+ */
 @Repository
 public class Data {
 	

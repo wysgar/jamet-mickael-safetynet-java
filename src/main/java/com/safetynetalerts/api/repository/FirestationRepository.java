@@ -11,6 +11,11 @@ import com.safetynetalerts.api.model.Data;
 import com.safetynetalerts.api.model.Firestation;
 import com.safetynetalerts.api.service.DataService;
 
+/**
+ * Repository class for managing {@link Firestation} data.
+ * This class provides methods to retrieve, save, update, and delete firestation records.
+ * It also handles writing firestation data to JSON files.
+ */
 @Repository
 public class FirestationRepository {
 	
@@ -20,6 +25,11 @@ public class FirestationRepository {
 	private DataService dataService;
 	private static final Logger logger = LogManager.getLogger("FirestationRepository");
 
+	/**
+     * Retrieves the list of firestations from the data source.
+     *
+     * @return a list of {@link Firestation}, or {@code null} if an error occurs
+     */
 	public List<Firestation> getFirestation() {
 	    logger.info("Fetching list of firestations.");
 	    try {
@@ -32,6 +42,11 @@ public class FirestationRepository {
 	    return null;
 	}
 
+	/**
+     * Saves a new firestation to the data source and writes the updated data to JSON.
+     *
+     * @param firestation the {@link Firestation} to save
+     */
 	public void saveFirestation(Firestation firestation) {
 	    logger.info("Attempting to save firestation: {}", firestation);
 	    try {
@@ -43,6 +58,12 @@ public class FirestationRepository {
 	    }
 	}
 
+	/**
+     * Updates an existing firestation at the specified index and writes the updated data to JSON.
+     *
+     * @param index the index of the firestation to update
+     * @param firestation the updated {@link Firestation} object
+     */
 	public void updateFirestation(int index, Firestation firestation) {
 	    logger.info("Attempting to update firestation at index {} with: {}", index, firestation);
 	    try {
@@ -54,6 +75,11 @@ public class FirestationRepository {
 	    }
 	}
 
+	/**
+     * Deletes the specified firestation from the data source and writes the updated data to JSON.
+     *
+     * @param firestation the {@link Firestation} to delete
+     */
 	public void deleteFirestation(Firestation firestation) {
 	    logger.info("Attempting to delete firestation: {}", firestation);
 	    try {
@@ -65,6 +91,9 @@ public class FirestationRepository {
 	    }
 	}
 	
+	/**
+     * Writes the current firestation data to a JSON file.
+     */
 	public void writeJSON() {
 	    logger.info("Writing firestations data to JSON.");
 	    try {

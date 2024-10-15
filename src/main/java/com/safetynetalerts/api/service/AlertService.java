@@ -30,6 +30,15 @@ import com.safetynetalerts.api.model.DTO.PersonInfoLastNameDTO;
 import com.safetynetalerts.api.model.DTO.PersonMedicalRecordDTO;
 import com.safetynetalerts.api.model.DTO.PhoneAlertDTO;
 
+/**
+ * Service providing various alerting functionalities for the SafetyNet Alerts API.
+ * It includes retrieving person data based on firestation number, address, city, 
+ * and other criteria, as well as calculating relevant information like age.
+ * 
+ * This service interacts with PersonService, FirestationService, and MedicalRecordService to 
+ * gather the necessary data and compute results, often returning DTO objects to represent 
+ * the processed data.
+ */
 @Service
 public class AlertService {
 	
@@ -42,6 +51,12 @@ public class AlertService {
 	private static final Logger logger = LogManager.getLogger("AlertService");
 	private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 
+	/**
+     * Get a list of persons covered by a specific firestation.
+     * 
+     * @param stationNumber The firestation number to retrieve persons for.
+     * @return A FirestationDTO containing the persons and a count of adults and children.
+     */
 	public FirestationDTO getPersonPerStation(int stationNumber) {
 		logger.info("Fetching persons for station number: {}", stationNumber);
 		
@@ -55,12 +70,12 @@ public class AlertService {
             medicalRecords = medicalRecordService.getMedicalRecord();
         } catch (Exception e) {
             logger.error("Error fetching data from services", e);
-            return new FirestationDTO();  // Retourner un objet vide en cas d'erreur
+            return new FirestationDTO();  // Return an empty object on error
         }
         
         logger.debug("Found {} persons, {} firestations, and {} medical records", persons.size(), firestations.size(), medicalRecords.size());
 
-	    // Créer une Map des adresses associées à la station demandée
+	    // Create a Map of addresses associated with the requested station
 	    Set<String> addressesForStation = firestations.stream()
 	        .filter(firestation -> firestation.getStation() == stationNumber)
 	        .map(Firestation::getAddress)
@@ -68,7 +83,7 @@ public class AlertService {
 
 	    logger.debug("Addresses associated with station {}: {}", stationNumber, addressesForStation);
 	    
-	    // Créer une Map pour rechercher les dossiers médicaux par nom complet
+	    // Create a Map to search medical records by full name
 	    Map<String, MedicalRecord> medicalRecordByName = medicalRecords.stream()
 	        .collect(Collectors.toMap(
 	            record -> record.getFirstName() + " " + record.getLastName(),
@@ -80,16 +95,16 @@ public class AlertService {
 	    int countAdult = 0;
 	    int countChild = 0;
 
-	    // Parcourir les personnes une seule fois et vérifier si leur adresse est associée à la station
+	    // Browse people once and check if their address is associated with the station
 	    for (Person person : persons) {
 	        if (addressesForStation.contains(person.getAddress())) {
 	        	logger.debug("Processing person: {} {}", person.getFirstName(), person.getLastName());
 	        	
-	            // Créer un DTO pour chaque personne
+	            // Create a DTO for each person
 	            PersonDTO personDTO = mapPersonToDTO(person);
 	            personsDTO.add(personDTO);
 
-	            // Rechercher le dossier médical correspondant
+	            // Search for the corresponding medical record
 	            MedicalRecord medicalRecord = medicalRecordByName.get(
 	                person.getFirstName() + " " + person.getLastName());
 
@@ -114,7 +129,16 @@ public class AlertService {
 	    return firestationDTO;
 	}
 	
-	// Helper method to map Person to PersonDTO
+	/**
+	 * Converts a Person object into a PersonDTO object.
+	 *
+	 * This method maps the attributes of a given {@link Person} object to a 
+	 * {@link PersonDTO} object. Specifically, it transfers the first name, 
+	 * last name, address, and phone number from the person entity to the DTO.
+	 *
+	 * @param person the {@link Person} object to be converted into a {@link PersonDTO}
+	 * @return the {@link PersonDTO} object containing the mapped fields from the person entity
+	 */
 	private PersonDTO mapPersonToDTO(Person person) {
 	    PersonDTO personDTO = new PersonDTO();
 	    personDTO.setAddress(person.getAddress());
@@ -124,6 +148,12 @@ public class AlertService {
 	    return personDTO;
 	}
 
+	/**
+     * Get children living at a specific address.
+     * 
+     * @param address The address to check for children.
+     * @return A ChildAlertDTO containing children and family members living at the address.
+     */
 	public ChildAlertDTO getChildPerAddress(String address) {
         logger.info("Fetching children for address: {}", address);
 
@@ -135,19 +165,19 @@ public class AlertService {
             medicalRecords = medicalRecordService.getMedicalRecord();
         } catch (Exception e) {
             logger.error("Error fetching data from services", e);
-            return new ChildAlertDTO();  // Retourner un objet vide en cas d'erreur
+            return new ChildAlertDTO();  // Return an empty object on error
         }
 
         logger.debug("Found {} persons and {} medical records", persons.size(), medicalRecords.size());
 
-        // Créer une Map pour rechercher les dossiers médicaux par nom complet
+        // Create a Map to search medical records by full name
         Map<String, MedicalRecord> medicalRecordByName = medicalRecords.stream()
             .collect(Collectors.toMap(
                 record -> record.getFirstName() + " " + record.getLastName(),
                 record -> record
             ));
 
-        // Filtrer les personnes qui habitent à l'adresse donnée
+        // Filter people who live at the given address
         List<Person> personsAtAddress = persons.stream()
             .filter(person -> person.getAddress().equals(address))
             .collect(Collectors.toList());
@@ -198,6 +228,12 @@ public class AlertService {
         }
     }
 
+	/**
+     * Get phone numbers of persons covered by a specific firestation.
+     * 
+     * @param firestationNumber The firestation number to retrieve phone numbers for.
+     * @return A PhoneAlertDTO containing the phone numbers of people covered by the firestation.
+     */
 	public PhoneAlertDTO getPhonePerStation(int firestationNumber) {
         logger.info("Fetching phone numbers for firestation number: {}", firestationNumber);
 
@@ -209,12 +245,12 @@ public class AlertService {
             firestations = firestationService.getFirestation();
         } catch (Exception e) {
             logger.error("Error fetching data from services", e);
-            return new PhoneAlertDTO(); // Retourner un objet vide en cas d'erreur
+            return new PhoneAlertDTO(); // Return an empty object on error
         }
 
         logger.debug("Found {} persons and {} firestations", persons.size(), firestations.size());
 
-        // Créer un Set des adresses associées à la caserne de pompiers
+        // Create a Set of addresses associated with the fire station
         Set<String> addressesForStation = firestations.stream()
             .filter(firestation -> firestation.getStation() == firestationNumber)
             .map(Firestation::getAddress)
@@ -222,11 +258,11 @@ public class AlertService {
 
         logger.debug("Addresses associated with firestation number {}: {}", firestationNumber, addressesForStation);
 
-        // Filtrer les personnes vivant aux adresses associées à la station
+        // Filter people living at addresses associated with the station
         List<String> phoneNumbers = persons.stream()
             .filter(person -> addressesForStation.contains(person.getAddress()))
             .map(Person::getPhone)
-            .distinct() // Éviter les doublons de numéros de téléphone
+            .distinct() // Avoid duplicate phone numbers
             .collect(Collectors.toList());
 
         logger.debug("Found {} phone numbers for firestation number {}", phoneNumbers.size(), firestationNumber);
@@ -238,6 +274,12 @@ public class AlertService {
         return phoneAlertDTO;
     }
 
+	/**
+     * Get persons and associated medical information for a specific address.
+     * 
+     * @param address The address to check for persons.
+     * @return A FireDTO containing persons' medical information and the firestation number.
+     */
 	public FireDTO getPersonPerAddress(String address) {
         logger.info("Fetching persons and firestation information for address: {}", address);
 
@@ -251,32 +293,32 @@ public class AlertService {
             medicalRecords = medicalRecordService.getMedicalRecord();
         } catch (Exception e) {
             logger.error("Error fetching data from services", e);
-            return new FireDTO();  // Retourner un objet vide en cas d'erreur
+            return new FireDTO();  // Return an empty object on error
         }
 
         logger.debug("Found {} persons, {} firestations, and {} medical records", 
                      persons.size(), firestations.size(), medicalRecords.size());
 
-        // Chercher la caserne associée à l'adresse
+        // Find the station associated with the address
         Firestation firestationForAddress = firestations.stream()
             .filter(firestation -> firestation.getAddress().equals(address))
             .findFirst()
             .orElse(null);
 
         if (firestationForAddress == null) {
-            return new FireDTO(); // Aucun résultat si l'adresse n'est pas couverte par une caserne
+            return new FireDTO(); // No results if the address is not covered by a barracks
         }
 
         logger.debug("Firestation for address {}: Station number {}", address, firestationForAddress.getStation());
 
-        // Créer une Map des dossiers médicaux par nom complet
+        // Create a Map of medical records by full name
         Map<String, MedicalRecord> medicalRecordByName = medicalRecords.stream()
             .collect(Collectors.toMap(
                 record -> record.getFirstName() + " " + record.getLastName(),
                 record -> record
             ));
 
-        // Filtrer les personnes vivant à l'adresse donnée
+        // Filter people living at the given address
         List<PersonMedicalRecordDTO> personMedicalRecordDTOs = persons.stream()
             .filter(person -> person.getAddress().equals(address))
             .map(person -> {
@@ -310,6 +352,12 @@ public class AlertService {
         return fireDTO;
     }
 
+	/**
+     * Get homes covered by specific firestations.
+     * 
+     * @param stationNumbers An array of firestation numbers to retrieve homes for.
+     * @return A list of FloodDTO objects, each representing a home and its residents' medical information.
+     */
 	public List<FloodDTO> getHomePerStation(Integer[] stationNumbers) {
         logger.info("Fetching homes for stations: {}", Arrays.toString(stationNumbers));
 
@@ -323,40 +371,40 @@ public class AlertService {
             medicalRecords = medicalRecordService.getMedicalRecord();
         } catch (Exception e) {
             logger.error("Error fetching data from services", e);
-            return new ArrayList<>();  // Retourner une liste vide en cas d'erreur
+            return new ArrayList<>();  // Return an empty list on error
         }
 
         logger.debug("Found {} persons, {} firestations, and {} medical records", 
                      persons.size(), firestations.size(), medicalRecords.size());
 
-        // Créer une map pour associer les adresses aux stations
+        // Create a map to associate addresses with stations
         Map<String, Integer> addressToStationMap = firestations.stream()
             .filter(firestation -> Arrays.asList(stationNumbers).contains(firestation.getStation()))
             .collect(Collectors.toMap(Firestation::getAddress, Firestation::getStation));
 
         logger.debug("Mapped addresses to stations: {}", addressToStationMap);
 
-        // Créer une map pour associer les noms complets aux dossiers médicaux
+        // Create a map to associate full names with medical records
         Map<String, MedicalRecord> medicalRecordByName = medicalRecords.stream()
             .collect(Collectors.toMap(
                 record -> record.getFirstName() + " " + record.getLastName(),
                 record -> record
             ));
 
-        // Regrouper les personnes par adresse
+        // Group people by address
         Map<String, List<Person>> personsByAddress = persons.stream()
             .filter(person -> addressToStationMap.containsKey(person.getAddress()))
             .collect(Collectors.groupingBy(Person::getAddress));
 
         logger.debug("Grouped persons by address: {}", personsByAddress);
 
-        // Construire la réponse finale avec les FloodDTO
+        // Building the final response with FloodDTOs
         List<FloodDTO> floodList = new ArrayList<>();
         for (Integer stationNumber : stationNumbers) {
             FloodDTO floodDTO = new FloodDTO();
             List<HomeDTO> homes = new ArrayList<>();
 
-            // Filtrer les adresses liées à la station actuelle
+            // Filter addresses linked to the current station
             List<String> addressesForStation = addressToStationMap.entrySet().stream()
                 .filter(entry -> entry.getValue().equals(stationNumber))
                 .map(Map.Entry::getKey)
@@ -400,6 +448,12 @@ public class AlertService {
         return floodList;
     }
 
+	/**
+     * Get medical and contact information for all persons with a specific last name.
+     * 
+     * @param lastName The last name to search for.
+     * @return A list of PersonInfoLastNameDTO objects with information on persons with the given last name.
+     */
 	public List<PersonInfoLastNameDTO> getInfoPerPerson(String lastName) {
         logger.info("Fetching person info for last name: {}", lastName);
 
@@ -411,19 +465,19 @@ public class AlertService {
             medicalRecords = medicalRecordService.getMedicalRecord();
         } catch (Exception e) {
             logger.error("Error fetching data from services", e);
-            return new ArrayList<>();  // Retourner une liste vide en cas d'erreur
+            return new ArrayList<>();  // Return an empty list on error
         }
 
         logger.debug("Found {} persons and {} medical records", persons.size(), medicalRecords.size());
 
-        // Créer une map pour associer les noms complets aux dossiers médicaux
+        // Create a map to associate full names with medical records
         Map<String, MedicalRecord> medicalRecordByName = medicalRecords.stream()
             .collect(Collectors.toMap(
                 record -> record.getFirstName() + " " + record.getLastName(),
                 record -> record
             ));
 
-        // Filtrer les personnes par nom de famille et créer la liste des DTO
+        // Filter people by last name and create DTO list
         List<PersonInfoLastNameDTO> personsInfo = persons.stream()
             .filter(person -> person.getLastName().equals(lastName))
             .map(person -> {
@@ -448,7 +502,7 @@ public class AlertService {
                     return null;
                 }
             })
-            .filter(Objects::nonNull)  // Filtrer les résultats nulls
+            .filter(Objects::nonNull)  // Filter null results
             .collect(Collectors.toList());
 
         logger.info("Returning info for {} persons with last name: {}", personsInfo.size(), lastName);
@@ -456,6 +510,12 @@ public class AlertService {
         return personsInfo;
     }
 	
+	/**
+     * Get emails of persons living in a specific city.
+     * 
+     * @param city The city to retrieve emails for.
+     * @return A list of unique email addresses for persons living in the given city.
+     */
 	public List<String> getEmail(String city) {
         logger.info("Fetching emails for city: {}", city);
 
@@ -465,16 +525,16 @@ public class AlertService {
             persons = personService.getPerson();
         } catch (Exception e) {
             logger.error("Error fetching data from person service", e);
-            return List.of();  // Retourner une liste vide en cas d'erreur
+            return List.of();  // Return an empty list on error
         }
 
         logger.debug("Found {} persons in total", persons.size());
 
-        // Utiliser les streams pour filtrer et collecter les emails
+        // Use streams to filter and collect emails
         List<String> emails = persons.stream()
             .filter(person -> city.equals(person.getCity()))
             .map(Person::getEmail)
-            .distinct()  // Évite les doublons
+            .distinct()  // Avoid duplicates
             .collect(Collectors.toList());
 
         logger.info("Found {} unique emails for city: {}", emails.size(), city);
@@ -482,6 +542,12 @@ public class AlertService {
         return emails;
     }
 	
+	/**
+     * Calculate the age of a person based on their birthdate.
+     * 
+     * @param medicalRecord The medical record containing the person's birthdate.
+     * @return The age of the person.
+     */
 	public double calculateAge(MedicalRecord medicalRecord) {
         try {
             LocalDate today = LocalDate.now();
@@ -494,7 +560,7 @@ public class AlertService {
         } catch (Exception e) {
             logger.error("Error parsing birthdate for {} {}: {}", 
                          medicalRecord.getFirstName(), medicalRecord.getLastName(), medicalRecord.getBirthdate(), e);
-            return 0;  // Retourner 0 si une erreur survient
+            return 0;  // Return 0 if an error occurs
         }
     }
 }

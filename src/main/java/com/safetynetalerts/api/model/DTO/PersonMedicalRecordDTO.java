@@ -2,6 +2,13 @@ package com.safetynetalerts.api.model.DTO;
 
 import java.util.List;
 
+/**
+ * Data Transfer Object (DTO) representing a person's medical record information.
+ * 
+ * This class encapsulates details such as the person's last name, phone number, 
+ * age, medications, and allergies. It is used for transferring medical record 
+ * data between layers of the application.
+ */
 public class PersonMedicalRecordDTO {
 	private String lastName;
 	private String phone;

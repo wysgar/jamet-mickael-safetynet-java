@@ -3,6 +3,14 @@ package com.safetynetalerts.api.model;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a medical record for an individual, containing personal 
+ * information, medications, and allergies.
+ * 
+ * This class is used to model the data related to a person's medical
+ * history within the application, including their name, birthdate, 
+ * medications they are taking, and any known allergies.
+ */
 public class MedicalRecord {
 	private String firstName;
 	private String lastName;

@@ -1,0 +1,9 @@
+com.safetynetalerts.api
+com.safetynetalerts.api.controller
+com.safetynetalerts.api.integration
+com.safetynetalerts.api.model
+com.safetynetalerts.api.model.DTO
+com.safetynetalerts.api.repository
+com.safetynetalerts.api.service
+com.safetynetalerts.api.unitaire.repository
+com.safetynetalerts.api.unitaire.service

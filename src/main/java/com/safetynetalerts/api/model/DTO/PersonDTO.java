@@ -1,5 +1,12 @@
 package com.safetynetalerts.api.model.DTO;
 
+/**
+ * Data Transfer Object (DTO) representing a person's basic information.
+ * 
+ * This class encapsulates essential details such as the person's first name, last name,
+ * address, and phone number. It is used for transferring personal information between
+ * layers of the application, particularly in response and request objects.
+ */
 public class PersonDTO {
 	private String firstName;
 	private String lastName;

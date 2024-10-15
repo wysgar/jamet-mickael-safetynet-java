@@ -11,6 +11,11 @@ import com.safetynetalerts.api.model.Data;
 import com.safetynetalerts.api.model.Person;
 import com.safetynetalerts.api.service.DataService;
 
+/**
+ * Repository class for managing {@link Person} data.
+ * Provides methods to retrieve, save, update, and delete person records,
+ * as well as writing the data to a JSON file.
+ */
 @Repository
 public class PersonRepository {
 
@@ -20,6 +25,11 @@ public class PersonRepository {
 	private DataService dataService;
 	private static final Logger logger = LogManager.getLogger("PersonRepository");
 	
+	/**
+     * Retrieves the list of persons from the data source.
+     *
+     * @return a list of {@link Person}, or {@code null} if an error occurs
+     */
 	public List<Person> getPerson() {
 	    logger.info("Fetching list of persons.");
 	    try {
@@ -32,6 +42,11 @@ public class PersonRepository {
 	    return null;
 	}
 
+	/**
+     * Saves a new person to the data source and writes the updated data to JSON.
+     *
+     * @param person the {@link Person} to save
+     */
 	public void savePerson(Person person) {
 	    logger.info("Attempting to save person: {}", person);
 	    try {
@@ -43,6 +58,12 @@ public class PersonRepository {
 	    }
 	}
 	
+	/**
+     * Updates an existing person at the specified index and writes the updated data to JSON.
+     *
+     * @param index the index of the person to update
+     * @param person the updated {@link Person} object
+     */
 	public void updatePerson(int index, Person person) {
 	    logger.info("Attempting to update person at index {}: {}", index, person);
 	    try {
@@ -54,6 +75,11 @@ public class PersonRepository {
 	    }
 	}
 
+	/**
+     * Deletes the specified person from the data source and writes the updated data to JSON.
+     *
+     * @param person the {@link Person} to delete
+     */
 	public void deletePerson(Person person) {
 	    logger.info("Attempting to delete person: {}", person);
 	    try {
@@ -65,6 +91,9 @@ public class PersonRepository {
 	    }
 	}
 	
+	/**
+     * Writes the current person records data to a JSON file.
+     */
 	public void writeJSON() {
 	    logger.info("Writing persons data to JSON.");
 	    try {

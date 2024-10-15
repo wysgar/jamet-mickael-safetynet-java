@@ -2,6 +2,12 @@ package com.safetynetalerts.api.model;
 
 import java.util.Objects;
 
+/**
+ * Represents an individual person with personal details such as name, address, and contact information.
+ * 
+ * This class is used to model the data related to a person within the application, including their
+ * first name, last name, address, city, zip code, phone number, and email address.
+ */
 public class Person {
 	private String firstName;
 	private String lastName;
