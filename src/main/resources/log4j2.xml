@@ -8,7 +8,7 @@
 
         <!-- Rolling File Appender -->
         <RollingFile name="RollingFile" fileName="C:/tmp/logs/monlog.log"
-             filePattern="logs/monlog-%d{MM-dd-yyyy}.log">
+             filePattern="C:/tmp/logs/monlog-%d{MM-dd-yyyy}.log">
 		    <PatternLayout>
 		        <pattern>%d [%t] %-5p %c - %m%n</pattern>
 		    </PatternLayout>
