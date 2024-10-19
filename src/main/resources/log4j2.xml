@@ -7,12 +7,16 @@
         </Console>
 
         <!-- Rolling File Appender -->
-        <RollingFile name="RollingFile" fileName="C:/tmp/logs/monlog.log"
-             filePattern="C:/tmp/logs/monlog-%d{MM-dd-yyyy}.log">
-		    <PatternLayout>
-		        <pattern>%d [%t] %-5p %c - %m%n</pattern>
-		    </PatternLayout>
-		</RollingFile>
+        <RollingFile name="RollingFile" fileName="C:/tmp/monlog.log"
+                     filePattern="C:/tmp/monlog-%d{MM-dd-yyyy}.log">
+            <PatternLayout>
+                <pattern>%d [%t] %-5p %c - %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Rotation basée sur la taille (10 Mo) -->
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
